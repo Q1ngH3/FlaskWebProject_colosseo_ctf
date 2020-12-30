@@ -14,4 +14,3 @@
 ![](https://md.byr.moe/uploads/upload_4232b4d5dcc50424a8b1e6bb26ea920d.png)
 
 ![](https://md.byr.moe/uploads/upload_44a6e74473bb9140bf83787e99652b58.png)
-

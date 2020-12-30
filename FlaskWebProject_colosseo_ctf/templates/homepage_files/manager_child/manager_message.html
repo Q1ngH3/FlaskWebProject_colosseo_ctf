@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Notice|MYCTF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../../static/content/homepage_files/manager.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="../../../static/bootstrap/script/jquery/jquery.min.js"></script>
+    <script src="../../../static/bootstrap/script/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index:10">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li class="active">
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id=id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id=id)}}">trend</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{user.name}} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if user.has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout')}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="particles-js" style="z-index: 0;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../../../static/scripts/particle/helloweb.js"></script>
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    <div class="container" id="side-box">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="{{url_for('home_page.manager',id=id)}}">主页</a></li>
+            <li><a href="{{url_for('home_page.manager_notice',id=id)}}">公告管理</a></li>
+            <li class="active"><a href="{{url_for('home_page.manager_message',id=id)}}">消息管理</a></li>
+            <li><a href="{{url_for('home_page.manager_challenge',id=id)}}">题目管理</a></li>
+        </ul>
+    </div>
+
+    <div class="manager-box">
+        <div>
+            <a href="javascript:void(0)"
+               onclick="document.getElementById('create-message').style.display='block';
+					document.getElementById('fade').style.display='block'">
+                <button type="button" id="create-group-button" class="btn btn-default"
+                        style="float: left;">
+                    发送消息
+                </button>
+            </a>
+            <div id="create-message" class="create-box">
+                <a href="javascript:void(0)" onclick="document.getElementById('create-message').style.display='none';
+				document.getElementById('fade').style.display='none'" style="float: right;">
+                    取消
+                </a>
+                <form action="{{url_for('home_page.message',id=id)}}" method="post" class="bs-example bs-example-form" role="form">
+                    {{message_form.csrf_token()}}{#实现csrf的检查#}
+                    <div class="notice-title-1" style="width:300px;text-align:left">
+                        <h3>发送消息</h3>
+                        <hr style="border:0.5px solid black;" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <span class="input-group-addon">标题</span>
+                        <input type="text" name="title" class="form-control title" placeholder="message title">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">接受者</span>
+                        <script type="text/javascript">
+                            function change_type() {
+                                var select1 = document.getElementById("type-select");
+                                var text = document.getElementById("receiver-input");
+                                text.value = select1.value;
+                            }
+                        </script>
+                        <input type="hidden" id="receiver-input" name="receiver">
+                        <select id="type-select" class="form-control" onchange="change_type()">
+                            <option selected="Selected">-请选择-</option>
+                            {% for u in Users %}
+                            <option value="{{u.name}}">{{u.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <textarea name="contents" id="contents" class="form-control contents" 
+                              style="max-height: 200px;min-height: 200px;" placeholder="message contents"></textarea>
+                    <br />
+                    {{message_form.create(class="btn btn-primary btn-simple",style="width:100px")}}
+                </form>
+            </div>
+        </div>
+
+        <center><button class="list-title">消息列表</button></center>
+
+        <div class="notice-box" style="width:85%;float:right;position: relative;">
+            <table id="notice-list" class="table table-bordered">
+                <thead>
+                    <tr style="color:Highlight">
+                        <th>序号</th>
+                        <th>标题</th>
+                        <th>接受者</th>
+                        <th>发送者</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in Messages | reverse %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{message.title}}</td>
+                        <td>{{message.receiver}}</td>
+                        <td>{{message.sender}}</td>
+                        <td>
+                            <a href="javascript:void(0)"
+                               onclick="document.getElementById('{{message.sequence}}').style.display='block';
+					            document.getElementById('fade').style.display='block'">
+                                <button type="button" id="update-group-button" class="btn btn-success"
+                                        style="height:30px;margin-bottom:-5px;margin-top:-5px">
+                                    编辑
+                                </button>
+                            </a>
+                            <div id="{{message.sequence}}" class="create-box">
+                                <a href="javascript:void(0)" onclick="document.getElementById('{{message.sequence}}').style.display='none';
+				                document.getElementById('fade').style.display='none'" style="float: right;">
+                                    取消
+                                </a>
+                                <form action="{{url_for('home_page.update_message',id=id,message_sequence=message.sequence)}}" method="post" class="bs-example bs-example-form" role="form">
+                                    {{update_message_form.csrf_token()}}{#实现csrf的检查#}
+                                    <div class="notice-title-1" style="width:300px;text-align:left">
+                                        <h3>编辑消息</h3>
+                                        <hr style="border:0.5px solid black;" />
+                                    </div>
+                                    <br />
+                                    <div class="input-group">
+                                        <span class="input-group-addon">标题</span>
+                                        <input type="text" name="title" class="form-control title" placeholder="{{message.title}}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">接受者</span>
+                                        <script type="text/javascript">
+                                            function change_type() {
+                                                var select1 = document.getElementById("u-type-select");
+                                                var text = document.getElementById("u-receiver-input");
+                                                text.value = select1.value;
+                                            }
+                                        </script>
+                                        <input type="hidden" id="u-receiver-input" name="receiver">
+                                        <select id="u-type-select" class="form-control" onchange="change_type()">
+                                            <option selected="Selected">{{message.receiver}}</option>
+                                            {% for u in Users %}
+                                            <option value="{{u.name}}">{{u.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">发送者</span>
+                                        <script type="text/javascript">
+                                            function change_type() {
+                                                var select1 = document.getElementById("s-type-select");
+                                                var text = document.getElementById("s-receiver-input");
+                                                text.value = select1.value;
+                                            }
+                                        </script>
+                                        <input type="hidden" id="s-receiver-input" name="sender">
+                                        <select id="s-type-select" class="form-control" onchange="change_type()">
+                                            <option selected="Selected">{{message.sender}}</option>
+                                            {% if message.sender != "系统" %}
+                                            <option value="system">系统</option>
+                                            {% endif %}
+                                            {% for u in Users %}
+                                            <option value="{{u.name}}">{{u.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">类型</span>
+                                        <input type="text" name="type" class="form-control title" placeholder="{{message.type}}">
+                                    </div>
+
+                                    <textarea name="contents" id="contents" class="form-control contents" 
+                                              style="max-height: 100px;min-height: 100px;" placeholder="{{message.contents}}"></textarea>
+                                    <br />
+                                    {{update_message_form.create(class="btn btn-primary btn-simple",style="width:100px")}}
+                                </form>
+                            </div>
+                            <a href="{{url_for('home_page.drop_message',id=id,message_sequence=message.sequence)}}">
+                                <button class="btn btn-danger" style="height:30px;margin-bottom:-5px;margin-top:-5px">删除</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../../../../static/scripts/particle/particles.js"></script>
+    <script src="../../../../static/scripts/particle/particle-code.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>MANAGERMENT|MYCTF</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../../static/content/homepage_files/user_manager.css"/>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- 包含头部信息用于适应不同设备 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="../../static/bootstrap/script/jquery/jquery.min.js"></script>
+	<script src="../../static/bootstrap/script/bootstrap.min.js"></script>
+	
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 10;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li class="active">
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id = id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id = id)}}">trend</a></li>
+                </ul>
+            </div>
+			
+            <div>
+                <!--向右对齐-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{user.name}} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if user.has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout')}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div id="particles-js" style="z-index: 0;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../static/scripts/particle/helloweb.js"></script>
+	<div class="window">
+		<div class="change-profile-box">
+			<h3>编辑个人信息</h3>
+			<hr />
+			<div class="change-profile">
+				<form action="{{url_for('home_page.reset_information')}}" method="post">
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">person</i>
+						</div>
+						<input type="text" id="username" placeholder='输入新的用户名' class="input-group-input">
+						<!--{{resetInformationForm.username(placeholder='输入新的用户名',class="input-group-input")}}-->
+					</div>
+					
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">email</i>
+						</div>
+						<input type="text" id="email" placeholder='输入新的邮箱' class="input-group-input">
+						<!--{{resetInformationForm.email(placeholder='输入新的邮箱',class="input-group-input")}}-->
+					</div>
+				
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">vpn_key</i>
+						</div>
+							<input type="text" id="code" placeholder='输入验证码' class="input-group-input code-input">
+							<!--{{ resetInformationForm.verify_code(placeholder='请输入验证码') }}-->
+						<!--点击图片重新获取验证码-->
+						<img src="{{ url_for('home_page.get_code') }}" id="v_container_1" onclick="this.src='{{ url_for('home_page.get_code') }}?'+ Math.random()">
+					</div>
+					
+					<div class="submit-box">
+						
+						<button id="submit-information" class="submit-button">提交</button>
+						<!--{{ resetInformationForm.sign_in(id='submit-button',value="提交")}}-->
+					</div>
+				</form>
+			</div>
+			
+			
+		</div>
+		
+		<div class="change-password-box">
+			<h3>修改密码</h3>
+			<hr />
+			<div class="change-password">
+				<form action="{{url_for('home_page.reset_password')}}" method="post">
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">lock</i>
+						</div>
+						<input type="password" id="old_password" placeholder='输入原密码' class="input-group-input">
+						<!--{{resetPasswordForm.username(placeholder='输入原密码',class="input-group-input")}}-->
+					</div>
+					
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">lock</i>
+						</div>
+						<input type="password" id="new_password" placeholder='输入新的密码' class="input-group-input">
+						<!--{{resetPasswordForm.email(placeholder='输入新的密码',class="input-group-input")}}-->
+					</div>
+					
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">lock</i>
+						</div>
+						<input type="password" id="new_password_confirm" placeholder='确认您的密码' class="input-group-input">
+						<!--{{resetPasswordForm.email(placeholder='确认您的密码',class="input-group-input")}}-->
+					</div>
+				
+					<div class="input-group">
+						<div class="icon-group">
+							<i class="material-icons icon">vpn_key</i>
+						</div>
+							<input type="text" id="code" placeholder='输入验证码' class="input-group-input code-input">
+							<!--{{ resetPasswordForm.verify_code(placeholder='请输入验证码') }}-->
+						<!--点击图片重新获取验证码-->
+						<img src="{{ url_for('home_page.get_code') }}" id="v_container_2" onclick="this.src='{{ url_for('home_page.get_code') }}?'+ Math.random()">
+					</div>
+					
+					<div class="submit-box">
+						
+						<button id="submit-password" class="submit-button">提交</button>
+						<!--{{ resetInformationForm.sign_in(id='submit-button',value="提交")}}-->
+					</div>
+				</form>
+			</div>
+			
+		</div>
+	</div>
+    <script src="../../static/scripts/particle/particles.js"></script>
+    <script src="../../static/scripts/particle/particle-code.js"></script>
+</body>
+</html>

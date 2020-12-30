@@ -1,0 +1,52 @@
+html body{
+	background-color: #000000;
+	color: white;
+}
+
+#large-header,#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	right:0;
+	top:0;
+}
+
+.information-window{
+	position: relative;
+	top: 50px;
+	left: 10%;
+	z-index: 4;
+	width: 200px;
+	background: none;
+}
+
+.team-member-window{
+	position: relative;
+	top: -100px;
+	left: 40%;
+	z-index: 4;
+}
+
+.statistics-window{
+	position: relative;
+	left: 2%;
+}
+.submit-window{
+	position: relative;
+	left: 2%;
+	width: 95%;
+	top:0px
+}
+#ranking-list{
+	position: relative;
+	left: -2%;
+	width: 100%;
+}
+
+.ranking-box{
+	position: relative;
+	left: 20px;
+	top: -20%;
+	width: 100%;
+}

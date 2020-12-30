@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title>Simple example</title>
+    <link rel="stylesheet" href="../../static/editormd/css/editormd.css"/>
+</head>
+<body>
+
+    <script src="../../static/bootstrap/script/jquery/jquery.min.js"></script>
+    <script src="../../static/editormd/editormd.min.js"></script>
+
+    <div class="row">
+        <h1 class="text-center">Edit Post</h1>
+
+        <form method="post" action="{{ url_for('homepage.edit_post',id=post.id,sequence=id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title.label }}
+                {% if form.title.errors %}
+                {% for e in form.title.errors %}
+                <p class="help-block">{{ e }}</p>
+                {% endfor %}
+                {% endif %}
+                {{ form.title(class_='form-control') }}
+            </div>
+
+            <div class="form-group">
+                {{ form.text.label }}
+                {% if form.text.errors %}
+                {% for e in form.text.errors %}
+                <p class="help-block">{{ e }}</p>
+                {% endfor %}
+                {% endif %}
+                <div id="editormd" class="form-control">
+                    {{ form.text(style="display:none;") }}
+                </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Edit">
+        </form>
+    </div>
+
+    <script src="../../static/editormd/editormd.min.js"></script>
+    <script type="text/javascript">
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("editormd", {
+                width: "100%",
+                height: "100%",
+                syncScrolling: "single",
+                path: "../../static/editormd/lib/"
+            });
+        });
+    </script>
+
+
+
+
+
+</body>
+</html>

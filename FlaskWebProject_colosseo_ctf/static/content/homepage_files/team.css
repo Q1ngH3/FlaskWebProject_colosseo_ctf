@@ -1,0 +1,97 @@
+html body{
+	background-color: #000000;
+	color: white;
+}
+
+.create-box {
+    display: none;
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    width: 50%;
+    height: 300px;
+    padding: 20px;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 1002;
+    overflow: auto;
+} 
+
+.teamname-input{
+	border-bottom: 1px solid #dbdbdb;  
+	border-top:0px;  
+	border-left:0px;  
+	border-right:0px;  
+	width: 200px;
+	position: relative;
+	top: -10px;
+	color: #000000;
+	height: 40px;
+	outline:none;
+}
+.code-input{
+	border-bottom: 1px solid #dbdbdb;  
+	border-top:0px;  
+	border-left:0px;  
+	border-right:0px;  
+	width: 100px;
+	position: relative;
+	top: -10px;
+	color: #000000;
+	height: 40px;
+	outline:none;
+}
+
+#large-header,#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	right:0;
+	top:0;
+}
+
+#create-group-button{
+	position: relative;
+	left: 5%;
+	top: 10px;
+	width: 100px;
+	border-color: royalblue;
+}
+
+.search-group-box{
+	position: relative;
+	width: 200px;
+	top: 10px;
+	right: 5%;
+}
+
+#ranking-title{
+	background-color: blueviolet;
+	color: white;
+	position: relative;
+	border: none;
+	border-radius: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	top: 50px;
+	left: -5%;
+	width: 150px;
+	height: 50px;
+	font-size: 16px;
+}
+
+#ranking-list{
+	position: relative;
+	left: 5%;
+	top: 100px;
+	width: 90%;
+}
+#v_container {
+    position: relative;
+    top: -10px;
+    width: 97px;
+    height: 40px
+}

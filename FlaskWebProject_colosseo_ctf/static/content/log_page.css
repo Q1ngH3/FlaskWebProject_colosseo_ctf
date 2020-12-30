@@ -1,0 +1,148 @@
+html body{
+	background-color: black;
+	color: white;
+	font-family: "Microsoft Yahei", sans-serif;
+	font-weight: lighter;
+}
+
+#large-header,#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	right:0;
+	top:0;
+}
+header {
+    background: none;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+}
+
+footer {
+	height: 50px;
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+footer ul {
+    padding: 0 3cm;
+    list-style: none
+}
+
+footer ul li {
+    display: inline-block
+}
+footer ul li a {
+    color: inherit;
+    padding: .9375rem;
+    font-weight: 500;
+    font-size: 12px;
+    border-radius: 3px;
+    text-decoration: none;
+    position: relative;
+    display: block
+}
+
+.float-left {
+    float: left !important
+}
+ 
+#title {
+    display: inline-block;
+    font-size: 64px;
+    padding-top: 200px;
+    width: 960px;
+}
+
+#titlebottom {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 960px;
+    font-size: 24px;
+    padding: 70px 70px 100px 70px;
+}
+ 
+#login {
+    display: inline-block;
+    border: 1px solid white;
+    width: 960px;
+    height: 240px;
+}
+
+.gosign-box{
+	position: center;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.resetpass_box {
+    position: relative;
+    top: 0px;
+    left: 150px;
+    font-size: 13px;
+}
+
+.username-group {
+    position: relative;
+    left: 230px
+}
+.password-group {
+    position: relative;
+    left: 240px
+}
+.code-group {
+    position: relative;
+    left: -264px;
+    top: 60px;
+}
+.icon-group {
+    width: 45px;
+    height: 37px;
+    background: none;
+    float: left;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 5px 0 0 5px;
+}
+.input-group-input {
+    border-radius: 0 5px 5px 0;
+    float: left;
+    width: 200px;
+    height: 37px;
+    border: none;
+}
+.icon {
+    position: relative;
+    top: 5px;
+}
+
+#submit-button {
+    position: relative;
+    top: 80px;
+    left: -30px;
+    width: 150px;
+    height: 50px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid #66ffcc;
+}
+#v_container{
+	position: relative;
+	width: 100px;
+	height: 35px;
+	left: -280px;
+	top: 65px;
+}
+#remember_me {
+    position: relative;
+    top: 90px;
+    left: 220px;
+}
+
+#remember_me_lable {
+    position: relative;
+    top: 90px;
+    left: 220px;
+}

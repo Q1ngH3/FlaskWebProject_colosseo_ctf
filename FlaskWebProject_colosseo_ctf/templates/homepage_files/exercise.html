@@ -1,0 +1,605 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>PROBLEM|MYCTF</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../../static/content/homepage_files/exercise.css"/>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<script src="../../static/scripts/create_code.js"></script>
+	<script src="../../static/bootstrap/script/jquery/jquery.min.js"></script>
+	<script src="../../static/bootstrap/script/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	    function goToTop() {
+	        location.href="#top";
+	    }
+	    function goToWeb() {
+			document.querySelector("#web").scrollIntoView();
+	    }
+	    function goToPwn() {
+	        document.querySelector("#pwn").scrollIntoView();
+	    }
+		function goToMisc() {
+		    document.querySelector("#misc").scrollIntoView();
+		}
+		function goToRev() {
+			document.querySelector("#rev").scrollIntoView();
+		}
+		function goToCoding() {
+		    document.querySelector("#coding").scrollIntoView();
+		}
+	</script>
+	
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 10;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li>
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id=id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id=id)}}">trend</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <!--向右对齐-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{name}} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout')}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!--背景particle-->
+    <div id="particles-js" style="z-index: 0;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../static/scripts/particle/helloweb.js"></script>
+    <center>
+        <a href="{{url_for('home_page.challenge',id=id)}}">
+            <button class="title-button">题目列表</button>
+        </a>
+    </center>
+    <div class="btn-window">
+        <a href="{{url_for('home_page.web',id=id)}}">
+            <button id="web-button" style="text-align:center" type="button" class="btn btn-primary">WEB</button>
+        </a>
+        <a href="{{url_for('home_page.pwn',id=id)}}">
+            <button id="pwn-button" style="text-align:center" type="button" class="btn btn-success">PWN</button>
+        </a>
+        <a href="{{url_for('home_page.misc',id=id)}}">
+            <button id="misc-button" style="text-align:center" type="button" class="btn btn-info">MISC</button>
+        </a>
+        <a href="{{url_for('home_page.rev',id=id)}}">
+            <button id="rev-button" style="text-align:center" type="button" class="btn btn-warning">REV</button>
+        </a>
+        <a href="{{url_for('home_page.crypto',id=id)}}">
+            <button id="crypto-button" style="text-align:center" type="button" class="btn btn-danger">CRYPTO</button>
+        </a>
+    </div>
+    
+    <div class="window">
+        <br /><br />
+        <h1 id="web">WEB</h1>
+        {% if not Question_Web %}
+        <br /><p>管理员很懒，这什么都没有</p><br />
+        {% endif %}
+        {% for question_web in Question_Web %}
+        {% if loop.first %}
+        <div class="jindu-box" style="width:95%">
+            <hr />
+            <div class="jindu" style="">
+                <div class="progress progress-striped active" style="float: left; width: 92%;">
+                    <div class="progress-bar" role="progressbar"
+                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{100 * user.web_times / loop.length}}%;">
+                    </div>
+                </div>
+                <span><strong>&nbsp;{{user.web_times}} / {{ loop.length }} 达成</strong></span>
+            </div>
+            <hr />
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="problems-window">
+            {# 这个是题目 #}
+            {#注释部分，不要管
+
+            <script type=”text/javascript”>
+                var question_name = '{{ question_web.name|tojson }}';
+                console.log(question_name);
+	            $(".docontent").html(question_name);
+            </script>
+            #}
+
+            {% for question_web in Question_Web %}
+            <div id="{{question_web.name}}" class="single-problem">
+                {% set web_name = question_web.name    %}
+                <a href="{{url_for('home_page.submit',id=id,question_name = web_name)}}">
+                    <button class="problem-btn" type="button"
+                            style="width:200px; height: 160px;">
+                        <div class="title-box" >
+                            <div class="bookmark">
+                                <i class="material-icons bookmark-lable" style="font-size: 50px; ">bookmark</i>
+                                <div class="bookmark-text">{{loop.index}}</div>
+                            </div>
+                            <span class="title">{#web-1#}{{question_web.name}}</span>
+                            {% for row in User_Relation_Question %}
+                            {% if question_web.name == row.question_name %}
+                            <img src="../../static/pictures/right.png" class="right-icon" />
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="score">
+                            <i class="material-icons" style="font-size:18px">assessment</i>
+                            <span>score: {{question_web.points_now}}{#1#}</span>
+                        </div>
+                        <div class="number">
+                            <i class="material-icons" style="font-size:18px">person</i>
+                            <span>solved: {{question_web.total_finish_times}}{#0#}</span>
+                        </div>
+
+                        <div class="rank">
+                            <img src="../../static/pictures/Medal_Gold.png" />
+                            <span class="rank-text">一血</span>
+                            <span> {{question_web.first_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Silver.png" />
+                            <span class="rank-text">二血</span>
+                            <span> {{question_web.second_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Bronze.png" />
+                            <span class="rank-text">三血</span>
+                            <span> {{question_web.third_blood_user}}</span>
+                        </div>
+                    </button>
+                </a>
+                {# 这个是弹出提交框 #}
+            </div>
+            &nbsp;&nbsp;
+            {% endfor %}
+
+            {#
+            <div id="web-2">
+                <script type=”text/javascript”>
+                    var element = document.getElementById('web-prob-2');
+                </script>
+                <a href="javascript:void(0)"
+                   onclick="document.getElementById('web-prob-2').style.display='block';
+							document.getElementById('fade').style.display='block'">
+                    <button class="problem-btn" type="button">
+                        <br />
+                        <span>web-2</span>
+                        <br />
+                        <i class="material-icons">assessment</i>
+                        <span>score: 1</span>
+                        &nbsp&nbsp&nbsp
+                        <i class="material-icons">person</i>
+                        <span>solved: 0</span>
+                        <br />
+
+                        <img src="../../static/pictures/Medal_Gold.png" />
+                        <span>一血</span>
+                        <br />
+                        <img src="../../static/pictures/Medal_Silver.png" />
+                        <span>二血</span>
+                        <br />
+                        <img src="../../static/pictures/Medal_Bronze.png" />
+                        <span>三血</span>
+                    </button>
+                </a>
+
+                <div id="web-prob-2" class="problem-box" style="margin: 0 auto; text-align: center;">
+                    <a href="javascript:void(0)" onclick="document.getElementById('web-prob-2').style.display='none';
+						document.getElementById('fade').style.display='none'" style="float: right;">
+                        关闭
+                    </a>
+                    <h1 style="color: #000000;">web-2</h1>
+                    <h2 style="color: aqua;">format：flag:myctf{xxx}</h2>
+                    <h3><a href="#" style="color: purple;">Link</a></h3>
+                    <br />
+                    <div>
+                        <i class="material-icons" style="color: grey; font-size: 30px;">flag</i>
+                        <input type="text" class="flag-input" placeholder="flag" id="web-2-flag">
+                        <br />
+                        <i class="material-icons" style="color: grey; font-size: 30px;">lock</i>
+                        <!--生成验证码-->
+                        <input type="text" class="code-input" placeholder="验证码" id="web-2-code">
+                        <div id="v_container-web-2" style="display: inline-block;">
+                            <script>verifyCode2 = new GVerify("v_container-web-2");</script>
+                        </div><!--生成验证码-->
+                    </div>
+                    <br />
+                    <button type="submit" class="btn btn-danger btn-simple">submit</button>
+                </div>
+            </div>
+        </div>
+        第二题也被注释掉了  #}
+
+    </div>
+
+    <div class="window1">
+        <h1 id="pwn">PWN</h1>
+        {% if not Question_Pwn %}
+        <br /><p>管理员很懒，这什么都没有</p><br />
+        {% endif %}
+        {% for question_pwn in Question_Pwn %}
+        {% if loop.first %}
+        <div class="jindu-box" style="width:95%">
+            <hr />
+            <div class="jindu" style="">
+                <div class="progress progress-striped active" style="float: left; width: 92%;">
+                    <div class="progress-bar progress-bar-success" role="progressbar"
+                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{100 * user.pwn_times / loop.length}}%;">
+                    </div>
+                </div>
+                <span><strong>&nbsp;{{user.pwn_times}} / {{ loop.length }} 达成</strong></span>
+            </div>
+            <hr />
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="problems-window">
+            {% for question_pwn in Question_Pwn %}
+            <div id="{#web-1#}{{question_pwn.name}}" class="single-problem">
+                {% set pwn_name = question_pwn.name    %}
+                <a href="{{url_for('home_page.submit',id=id,question_name = pwn_name)}}">
+                    <button class="problem-btn" type="button">
+                        <div class="title-box">
+                            <div class="bookmark">
+                                <i class="material-icons bookmark-lable" style="font-size: 50px">bookmark</i>
+                                <div class="bookmark-text">{{loop.index}}</div>
+                            </div>
+                            <span class="title">{#web-1#}{{question_pwn.name}}</span>
+                            {% for row in User_Relation_Question %}
+                            {% if question_pwn.name == row.question_name %}
+                            <img src="../../static/pictures/right.png" class="right-icon" />
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="score">
+                            <i class="material-icons" style="font-size:18px">assessment</i>
+                            <span>score: {{question_pwn.points_now}}{#1#}</span>
+                        </div>
+                        <div class="number">
+                            <i class="material-icons" style="font-size:18px">person</i>
+                            <span>solved: {{question_pwn.total_finish_times}}{#0#}</span>
+                        </div>
+
+                        <div class="rank">
+                            <img src="../../static/pictures/Medal_Gold.png" />
+                            <span class="rank-text">一血</span>
+                            <span> {{question_pwn.first_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Silver.png" />
+                            <span class="rank-text">二血</span>
+                            <span> {{question_pwn.second_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Bronze.png" />
+                            <span class="rank-text">三血</span>
+                            <span> {{question_pwn.third_blood_user}}</span>
+                        </div>
+                    </button>
+                </a>
+                {# 这个是弹出提交框 #}
+            </div>
+            &nbsp;&nbsp;
+            {% endfor %}
+
+        </div>
+    </div>
+    <div class="window1">
+        <h1 id="misc">MISC</h1>
+        {% if not Question_Misc %}
+            <br /><p>管理员很懒，这什么都没有</p><br />
+        {% endif %}
+        {% for question_misc in Question_Misc %}
+        {% if loop.first %}
+        <div class="jindu-box" style="width:95%">
+            <hr />
+            <div class="jindu" style="">
+                <div class="progress progress-striped active" style="float: left; width: 92%;">
+                    <div class="progress-bar progress-bar-info" role="progressbar"
+                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{100 * user.misc_times / loop.length}}%;">
+                    </div>
+                </div>
+                <span><strong>&nbsp;{{user.misc_times}} / {{ loop.length }} 达成</strong></span>
+            </div>
+            <hr />
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="problems-window">
+            {% for question_misc in Question_Misc %}
+            <div id="{#web-1#}{{question_misc.name}}" class="single-problem">
+                {% set misc_name = question_misc.name    %}
+                <a href="{{url_for('home_page.submit',id=id,question_name = misc_name)}}">
+                    <button class="problem-btn" type="button">
+                        <div class="title-box">
+                            <div class="bookmark">
+                                <i class="material-icons bookmark-lable" style="font-size: 50px">bookmark</i>
+                                <div class="bookmark-text">{{loop.index}}</div>
+                            </div>
+                            <span class="title">{#web-1#}{{question_misc.name}}</span>
+                            {% for row in User_Relation_Question %}
+                            {% if question_misc.name == row.question_name %}
+                            <img src="../../static/pictures/right.png" class="right-icon" />
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="score">
+                            <i class="material-icons" style="font-size:18px">assessment</i>
+                            <span>score: {{question_misc.points_now}}{#1#}</span>
+                        </div>
+                        <div class="number">
+                            <i class="material-icons" style="font-size:18px">person</i>
+                            <span>solved: {{question_misc.total_finish_times}}{#0#}</span>
+                        </div>
+
+                        <div class="rank">
+                            <img src="../../static/pictures/Medal_Gold.png" />
+                            <span class="rank-text">一血</span>
+                            <span> {{question_misc.first_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Silver.png" />
+                            <span class="rank-text">二血</span>
+                            <span> {{question_misc.second_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Bronze.png" />
+                            <span class="rank-text">三血</span>
+                            <span> {{question_misc.third_blood_user}}</span>
+                        </div>
+                    </button>
+                </a>
+                {# 这个是弹出提交框 #}
+            </div>
+            &nbsp;&nbsp;
+            {% endfor %}
+
+            {#
+            <div id="misc-prob-1" class="problem-box" style="margin: 0 auto; text-align: center;">
+                <a href="javascript:void(0)" onclick="document.getElementById('misc-prob-1').style.display='none';
+							document.getElementById('fade').style.display='none'" style="float: right;">
+                    关闭
+                </a>
+                <h1 style="color: #000000;">misc-1</h1>
+                <br />
+                <h4 style="color: purple;">
+                    &nbsp;&nbsp;设一个等差数列，首元素为367，公差为186,
+                    现在要求找出属于该等差数列中的第151个素数并输出。
+                </h4>
+
+                <h2 style="color: aqua;">format：flag:myctf{xxx}</h2>
+                <br />
+                <div>
+                    <i class="material-icons" style="color: grey; font-size: 30px;">flag</i>
+                    <input type="text" class="flag-input" placeholder="flag" id="misc-1-flag">
+                    <br />
+                    <i class="material-icons" style="color: grey; font-size: 30px;">lock</i>
+                    <!--生成验证码-->
+                    <input type="text" class="code-input" placeholder="验证码" id="misc-1-code">
+                    <div id="v_container-misc-1" style="display: inline-block;">
+                        <script>var verifyCode3 = new GVerify("v_container-misc-1");</script>
+                    </div><!--生成验证码-->
+                </div>
+                <br />
+                <button type="submit" class="btn btn-danger btn-simple">submit</button>
+            </div>
+            #}
+        </div>
+
+    </div>
+
+
+
+    <div class="window1">
+        <h1 id="rev">REV</h1>
+        {% if not Question_Rev %}
+        <br /><p>管理员很懒，这什么都没有</p><br />
+        {% endif %}
+        {% for question_rev in Question_Rev %}
+        {% if loop.first %}
+        <div class="jindu-box" style="width:95%">
+            <hr />
+            <div class="jindu" style="">
+                <div class="progress progress-striped active" style="float: left; width: 92%;">
+                    <div class="progress-bar progress-bar-warning" role="progressbar"
+                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{100 * user.reverse_times / loop.length}}%;">
+                    </div>
+                </div>
+                <span><strong>&nbsp;{{user.reverse_times}} / {{ loop.length }} 达成</strong></span>
+            </div>
+            <hr />
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="problems-window">
+            {% for question_rev in Question_Rev %}
+            <div id="{#web-1#}{{question_rev.name}}" class="single-problem">
+                {% set rev_name = question_rev.name    %}
+                <a href="{{url_for('home_page.submit',id=id,question_name = rev_name)}}">
+                    <button class="problem-btn" type="button">
+                        <div class="title-box">
+                            <div class="bookmark">
+                                <i class="material-icons bookmark-lable" style="font-size: 50px">bookmark</i>
+                                <div class="bookmark-text">{{loop.index}}</div>
+                            </div>
+                            <span class="title">{#web-1#}{{question_rev.name}}</span>
+                            {% for row in User_Relation_Question %}
+                            {% if question_rev.name == row.question_name %}
+                            <img src="../../static/pictures/right.png" class="right-icon" />
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="score">
+                            <i class="material-icons" style="font-size:18px">assessment</i>
+                            <span>score: {{question_rev.points_now}}{#1#}</span>
+                        </div>
+                        <div class="number">
+                            <i class="material-icons" style="font-size:18px">person</i>
+                            <span>solved: {{question_rev.total_finish_times}}{#0#}</span>
+                        </div>
+
+                        <div class="rank">
+                            <img src="../../static/pictures/Medal_Gold.png" />
+                            <span class="rank-text">一血</span>
+                            <span> {{question_rev.first_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Silver.png" />
+                            <span class="rank-text">二血</span>
+                            <span> {{question_rev.second_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Bronze.png" />
+                            <span class="rank-text">三血</span>
+                            <span> {{question_rev.third_blood_user}}</span>
+                        </div>
+                    </button>
+                </a>
+                {# 这个是弹出提交框 #}
+            </div>
+            &nbsp;&nbsp;
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <div class="window1">
+        <h1 id="crypto">CRYPTO</h1>
+        {% if not Question_Crypto %}
+        <br /><p>管理员很懒，这什么都没有</p><br />
+        {% endif %}
+        {% for question_crypto in Question_Crypto %}
+        {% if loop.first %}
+        <div class="jindu-box" style="width:95%">
+            <hr />
+            <div class="jindu" style="">
+                <div class="progress progress-striped active" style="float: left; width: 92%;">
+                    <div class="progress-bar progress-bar-danger" role="progressbar"
+                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         style="width: {{100 * user.crypto_times / loop.length}}%;">
+                    </div>
+                </div>
+                <span><strong>&nbsp;{{user.crypto_times}} / {{ loop.length }} 达成</strong></span>
+            </div>
+            <hr />
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="problems-window">
+            {% for question_crypto in Question_Crypto %}
+            <div id="{#web-1#}{{question_crypto.name}}" class="single-problem">
+                {% set crypto_name = question_crypto.name    %}
+                <a href="{{url_for('home_page.submit',id=id,question_name = crypto_name)}}">
+                    <button class="problem-btn" type="button">
+                        <div class="title-box">
+                            <div class="bookmark">
+                                <i class="material-icons bookmark-lable" style="font-size: 50px">bookmark</i>
+                                <div class="bookmark-text">{{loop.index}}</div>
+                            </div>
+                            <span class="title">{#web-1#}{{question_crypto.name}}</span>
+                            {% for row in User_Relation_Question %}
+                            {% if question_crypto.name == row.question_name %}
+                            <img src="../../static/pictures/right.png" class="right-icon" />
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="score">
+                            <i class="material-icons" style="font-size:18px">assessment</i>
+                            <span>score: {{question_crypto.points_now}}{#1#}</span>
+                        </div>
+                        <div class="number">
+                            <i class="material-icons" style="font-size:18px">person</i>
+                            <span>solved: {{question_crypto.total_finish_times}}{#0#}</span>
+                        </div>
+
+                        <div class="rank">
+                            <img src="../../static/pictures/Medal_Gold.png" />
+                            <span class="rank-text">一血</span>
+                            <span> {{question_crypto.first_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Silver.png" />
+                            <span class="rank-text">二血</span>
+                            <span> {{question_crypto.second_blood_user}}</span>
+                            <br />
+                            <img src="../../static/pictures/Medal_Bronze.png" />
+                            <span class="rank-text">三血</span>
+                            <span> {{question_crypto.third_blood_user}}</span>
+                        </div>
+                    </button>
+                </a>
+                {# 这个是弹出提交框 #}
+            </div>
+            &nsub;&nsub;
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+
+    <div id="gototop">
+        <input onclick="goToTop()" id="gototop-button" type="button" style="text-align:center" value="^" />
+    </div>
+
+    <script src="../../static/scripts/particle/particles.js"></script>
+    <script src="../../static/scripts/particle/particle-code.js"></script>
+
+</body>
+</html>

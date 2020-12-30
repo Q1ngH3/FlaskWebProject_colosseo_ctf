@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>team information|myctf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../../static/content/homepage_files/my_team_information.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="../../../../static/bootstrap/script/jquery/jquery.min.js"></script>
+    <script src="../../../../static/bootstrap/script/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- 引入jquery.js -->
+    <script type="text/javascript" src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 引入 echarts.js -->
+    <script type="text/javascript" src="http://echarts.baidu.com/dist/echarts.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 10;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li>
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id=id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id=id)}}">trend</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <!--向右对齐-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{ user.name }}<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if user.has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout',id = id)}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="particles-js" style="z-index: -1;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../../../static/scripts/particle/helloweb.js"></script>
+    
+    {% if not user.has_team %}
+    <div class="btn-window" style="position: relative;left: 50px;">
+        {% if user.has_team == False and team.member_count < 3 and ((not message) or (message.is_dealt == False)) %}{# 一个用户有资格加入其他队伍的判断，如果他有战队或者队伍满了就不会再显示这个了 #}
+        <a href="{{url_for('home_page.send_message_join_in',id=id,team_name=team_name)}}"
+        <button style="text-align:center;" type="button" class="btn btn-danger">申请加入</button>
+        </a>
+        {% elif team.member_count >= 3 %}
+        <button style="text-align:center;" type="button" disabled="disabled" class="btn btn-danger">成员已满</button>
+        {% elif message.is_dealt == False %}
+        <button style="text-align:center;" type="button" disabled="disabled" class="btn btn-danger">您已申请</button>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+
+
+    <div class="team-infomation-window">
+        <div class="information-window" style="display: inline-block;">
+            <div class="panel panel-primary" style="width: 300px;">
+                <div class="panel-heading" style="text-align: center;">
+                    <h3 class="panel-title">基本信息</h3>
+                </div>
+                <ul class="panel-body" style="color: #000000;">
+                    <li>
+                        <i class="material-icons">face</i>
+                        <label for="username-lable" style="position: relative;top: -5px;">战队名称:</label>
+                        <label for="username" style="float: right;">{{team.name}}{#XXX#}</label>
+                    </li>
+                    <li>
+                        <i class="material-icons">group</i>
+                        <label for="group-lable" style="position: relative;top: -5px;">战队人数:</label>
+                        <label for="group" style="float: right;">{{team.member_count}}{#XXX#}</label>
+                    </li>
+                    <li>
+                        <i class="material-icons">assessment</i>
+                        <label for="email-lable" style="position: relative;top: -5px;">战队积分:</label>
+                        <label for="email" style="float: right;">{{team.score}}{#0#}</label>
+                    </li>
+                    <li>
+                        <i class="material-icons">access_time</i>
+                        <label for="email-lable" style="position: relative;top: -5px;">创建时间:</label>
+                        <label for="email" style="float: right;">{#2019-10-11 09:10:20#}{{team.date}}</label>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="achievement-window">
+
+            <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+            <script>
+                // Build the chart
+var myChart = echarts.init(document.getElementById('container'));
+var option = {
+    title: {
+        text: 'Team Achievements',
+        subtext: '',
+        x: 'center',
+        textStyle: {
+            color: 'white',
+            fontStyle: 'normal',
+            fontWeight: 'lighter',
+        }
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    color:['#20B2AA','#bbe2e8','#FF00FF','#FFD700','#008000'],
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['WEB', 'PWN', 'MISC', 'REV', 'CRYPTO'],
+        textStyle: {
+            color:'#98FB98'
+        }
+    },
+    series: [
+        {
+            name: 'Number',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 1.0)'
+                }
+            }
+        }
+    ]
+};
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+
+myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+$.ajax({
+    type: "get",
+    //       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+    url: "{{url_for('home_page.team_achievement_data',team_name=team.name)}}",    //请求发送到Servlet处
+    //       data : {},
+    dataType: "json",        //返回数据形式为json
+    success: function (result) {
+        myChart.hideLoading();
+        myChart.setOption({ //加载数据图表
+            series: [{
+                data: [
+                    { value: result["data"][0]["value"], name: 'WEB' },
+                    { value: result["data"][1]["value"], name: 'PWN' },
+                    { value: result["data"][2]["value"], name: 'MISC' },
+                    { value: result["data"][3]["value"], name: 'REV' },
+                    { value: result["data"][4]["value"], name: 'CRYPTO' }
+                ],
+            }]
+        });
+    },
+    error: function (errorMsg) {
+        //请求失败时执行该函数
+        alert("wrong!");
+        myChart.hideLoading();
+    }
+})
+            </script>
+
+        </div>
+
+        <div class="team-member-window">
+            <div class="panel panel-primary" style="width: 300px;">
+                <div class="panel-heading" style="text-align: center;">
+                    <h3 class="panel-title">战队成员</h3>
+                </div>
+
+                <table class="table" style="color: #000000;">
+                    <thead>
+                        <tr>
+                            <th>身份</th>
+                            <th>用户名</th>
+                            <th>贡献</th>{#也就是分数#}
+                            <!--队长才有 <th>成员管理</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in members %}
+                        {% if member.is_leader and member.is_member%}
+
+                        <tr>
+                            <td>队长</td>
+                            <td><a href="{{url_for('home_page.other_user_information',id=id,other_user_name=member.name)}}">{{member.name}}</a></td>
+                            <td>{{member.score}}{#0#}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% for member in members %}
+                        {% if member.is_leader==False and member.is_member==True %}
+                        <tr>
+                            <td>成员</td>
+                            <td><a href="{{url_for('home_page.other_user_information',id=id,other_user_name=member.name)}}">{{member.name}}</a></td>
+                            <td>{{member.score}}{#0#}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="submit-window">
+            <div class="submissions-title-box">
+                <span class="submissions-title">战队成就</span>
+            </div>
+            <hr />
+
+            <div class="ranking-box">
+                <table id="ranking-list" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Problem</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                            <th>Honor</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in team_relation_question %}
+                        <tr>
+                            <td>{#001#}{{loop.index}}</td>
+                            <td>{#problem1#}{{row.question_name}}</td>
+                            <td>{#100#}{{row.this_points}}</td>
+                            <td>{#2019-10-11 09:10:11#}{{row.date}}</td>
+                            {% if row.is_first_blood %}
+                            <td>一血</td>
+                            {% elif row.is_second_blood %}
+                            <td>二血</td>
+                            {% elif row.is_third_blood %}
+                            <td>三血</td>
+                            {% else %}
+                            <td>暂无排行</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../../../../static/scripts/particle/particles.js"></script>
+    <script src="../../../../static/scripts/particle/particle-code.js"></script>
+
+</body>
+</html>

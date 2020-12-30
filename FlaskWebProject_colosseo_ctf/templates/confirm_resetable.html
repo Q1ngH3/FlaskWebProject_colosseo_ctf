@@ -1,0 +1,13 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is a test........</title>
+</head>
+
+<body>
+    <h1>Hello!!!  </h1> <h1> {{ name }} </h1>
+    <h2>您正在重置您的密码</h2>
+    <p>请点击右边链接进行重置密码 ==> <a href=" {{ url_for('auth.confirm_resetable',name = name, _external=True) }}">重置密码</a></p>
+</body>
+</html>

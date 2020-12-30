@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Help|MYCTF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../static/content/homepage_files/help.css"/>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="../../static/bootstrap/script/jquery/jquery.min.js"></script>
+	<script src="../../static/bootstrap/script/bootstrap.min.js"></script>
+	
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;">
+		<div class="container-fluid"> 
+			<div class="navbar-header">
+				<li class="active">
+					<a class="navbar-brand" href="home_page.html">HOME|MYCTF</a>
+				</li>
+			</div>
+			<div>
+		        <ul class="nav navbar-nav">
+		            <li><a href="exercise.html">challenges</a></li>
+		            <li><a href="notice.html">notice</a></li>
+					<li><a href="ranking_list.html">ranking</a></li>
+					<li><a href="group.html">team</a></li>
+					<li><a href="trend.html">trend</a></li>
+		        </ul>
+		    </div>
+			
+			<div>
+				<!--向右对齐-->
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="{{url_for('home_page.message',id=id)}}">
+							<i class="material-icons">message</i>
+							<span style="position: relative;top: -10px;">messages</span>
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							welcome xxx <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="user_information.html">
+									<span class="glyphicon glyphicon-user"></span>
+									my information
+								</a>
+							</li>
+							<li>
+								<a href="user_information.html">
+									<i class="material-icons">group</i>
+									<label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-log-out"></span>
+									log out
+								</a>
+							</li> 
+						</ul>
+					</li>
+				</ul>
+				
+			</div>
+		</div>
+	</nav>
+	
+	<div class="contents">
+		<h1>MYCTF帮助文档（2019年10月7日更新）</h1>
+		<hr/>
+		<h2>一、用户</h2>
+		<h5>一个用户，有唯一的主键realname和自定义的非主键username。</h5>
+		<h5>所有用户需要实名认证，即每个学号对应一个用户</h5>
+		<h2>二、分数计算</h2>
+		<h5>。。。</h5>
+		<h2>三、本站规则</h2>
+		<h5>不允许什么，允许什么，有什么奖惩</h5>
+		<h2>四、其他</h2>
+		<h3>管理员联系方式</h3>
+		<h5>
+			QQ：1220418120  2395967268  2379448326
+			<br />
+			电话：19801231323
+		</h5>
+	</div>
+
+</body>
+
+</html>

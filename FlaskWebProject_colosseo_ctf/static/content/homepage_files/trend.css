@@ -1,0 +1,28 @@
+.trend{
+	position: relative;
+	left: 2%;
+}
+
+html body{
+	background-color: #000000;
+	color: white;
+}
+
+#large-header,#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	right:0;
+	top:0;
+}
+
+#main {
+    margin: auto;
+    width: 800px;
+    height: 550px;
+}
+.title-box{
+    margin:auto;
+    width:80%;
+}

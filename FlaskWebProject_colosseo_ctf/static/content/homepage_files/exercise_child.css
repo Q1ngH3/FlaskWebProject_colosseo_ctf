@@ -1,0 +1,211 @@
+﻿html body {
+    background-color: #000000;
+    color: white;
+}
+
+button {
+    transition: all 0.3s;
+}
+
+    button:hover {
+        transform: scale(1.1);
+    }
+
+#large-header, #particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.single-problem {
+    margin-bottom:10px;
+    display: inline-block;
+}
+
+#gototop {
+    position: fixed;
+    right: 0;
+    bottom: 50px;
+    z-index: 5;
+}
+
+.problem-btn {
+    border: 2px solid rgba(0,102,255,0.5);
+    border-radius: 5px;
+    background: none;
+    color: #FFFFFF;
+    width: 200px;
+    height: 160px;
+    text-align: center;
+}
+
+.btn-window {
+    text-align: center;
+    position: relative;
+    top: 20px
+}
+
+    .btn-window button {
+        position: relative;
+        left: 2%;
+        width: 100px;
+        height: 40px;
+    }
+
+.window {
+    position: relative;
+    left: 2%;
+}
+
+.flag-input {
+    border-bottom: 1px solid #dbdbdb;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    width: 200px;
+    position: relative;
+    top: -10px;
+    color: #000000;
+    height: 40px;
+    outline: none;
+}
+
+.code-input {
+    border-bottom: 1px solid #dbdbdb;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    width: 100px;
+    position: relative;
+    top: -10px;
+    color: #000000;
+    height: 40px;
+    outline: none;
+}
+
+.problem-box {
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+    height: 450px;
+    padding: 20px;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    z-index: 1002;
+    overflow: auto;
+}
+
+.title-button {
+    background-color: blueviolet;
+    color: white;
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    font-size: 18px;
+}
+
+.title-box {
+    height: 40px;
+    width: 200px;
+    float: left;
+    background-color: #6495ED;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+    left: -7.5px;
+    top: -17px;
+}
+
+.title {
+    font-size: x-large;
+    font-weight: 400;
+    float: left;
+    padding: 4px 20px;
+}
+
+.score {
+    float: left;
+    width: 200px;
+    text-align: left;
+    position: relative;
+    left: -5px
+}
+
+.number {
+    height: 1px;
+    width: 200px;
+    float: right;
+    text-align: right;
+    position: relative;
+    top: -23px;
+}
+
+.score span {
+    position: relative;
+    top: -4px;
+}
+
+.number span {
+    position: relative;
+    top: -4px;
+}
+
+.bookmark {
+    position: relative;
+    float: left;
+    top: -6px;
+    left: 4px;
+}
+
+.bookmark-lable {
+    font-size: 50px;
+    position: relative;
+    left: -5px;
+    top: 1px;
+    color: rgb(244, 255, 52);
+    transform: scale(1.7,1);
+    -ms-transform: scale(1.7,1);
+    -webkit-transform: scale(1.7,1);
+    -moz-transform: scale(1.7,1);
+    -o-transform: scale(1.7,1);
+}
+
+.bookmark-text {
+    font-size: 30px;
+    font-weight: 500;
+    position: relative;
+    top: -53px;
+    left: -5px;
+}
+
+.rank {
+    position: relative;
+    top: 5px;
+    left: 10%;
+}
+
+    .rank img {
+        width: 20px;
+        float: left;
+    }
+
+.rank-text {
+    float: left;
+}
+
+.right-icon {
+    position: relative;
+    right: -25px;
+    top: -50px;
+    width: 80px;
+}

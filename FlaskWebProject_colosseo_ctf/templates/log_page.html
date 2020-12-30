@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home|MYCTF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/static/content/log_page.css" />
+</head>
+
+<body>
+    <div id="particles-js" style="z-index: -1;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../static/scripts/particle/helloweb.js"></script>
+    <header>
+        <div>
+            <center>
+                <div id="title" style="position:relative;font-size:50px;color:#49c94a;font-family:Verdana;margin-top:-150px;">HELLO!</div>
+
+                <h1 style="font-size:80px;color:darkturquoise;font-family:'Comic Sans MS'">Col0sseoCTFi3Ld</h1>
+            </center>
+            <div id="titlebottom" style="margin-top:-50px;">
+                we are BUPTer
+            </div>
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <script>
+                    alert("{{ message }}");
+                </script>
+            </div>
+            {% endfor %}
+            <div id="login">
+                <div class="gosign-box">
+                    New user?
+                    <a href="auth/register" id="gosign" style="color: #00BCD4; background: transparent; border:none; text-decoration:underline">Sign up now!</a>
+                </div>
+                <form action="{{ url_for('log.login') }}" method="post">
+                    {#在我看来，这应该确实是模板引擎+url_for与蓝图间的矛盾，这不是提交给函数名，而是提交给路由#}
+                    {{loginForm.csrf_token()}}{#实现csrf的检查#}
+                    <div>
+                        <div class="username-group">
+                            <div class="icon-group">
+                                <i class="material-icons icon">person</i>
+                            </div>
+                            {{loginForm.username(placeholder='username',class="input-group-input")}}
+                        </div>
+                        <div class="password-group">
+                            <div class="icon-group">
+                                <i class="material-icons icon">lock</i>
+                            </div>
+                            {{loginForm.password(placeholder='password',class="input-group-input")}}
+                        </div>
+                        <div class="code-group">
+                            <div class="icon-group">
+                                <i class="material-icons icon">vpn_key</i>
+                            </div>
+                            {{loginForm.verify_code(placeholder='请输入验证码',class="input-group-input")}}
+                        </div>
+                        <!--点击图片重新获取验证码-->
+                        <img src="{{ url_for('log.get_code') }}" id="v_container" onclick="this.src='{{ url_for('log.get_code') }}?'+ Math.random()">
+                        <div class="resetpass_box">
+                            Forget your password?
+                            <a href="{{url_for('auth.reset_password_confirm')}}" id="resetpass" style="color: #00BCD4; background: transparent; border:none; text-decoration:underline">Reset it!</a>
+                        </div>
+                        {{loginForm.remember_me}}
+                        {{loginForm.remember_me.label(id='remember_me_lable')}}
+                        {{loginForm.sign_in(id='submit-button',value="SIGN IN")}}
+                        {#<input id="submit-button" input type="submit" value="SIGN IN" onclick="r();" />#}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <footer class="footer" style="z-index: 9999">
+        <div class="container">
+            <nav class="float-left">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('log.site_itself') }}">About This Site</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('log.notice') }}">Notice</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('log.help') }}">Help</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+    <script src="../static/scripts/particle/particles.js"></script>
+    <script src="../static/scripts/particle/particle-code.js"></script>
+</body>
+
+</html>

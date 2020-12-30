@@ -1,0 +1,71 @@
+html body{
+	background-color: black;
+	color: white;
+}
+
+#large-header,#particles-js{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	right:0;
+	top:0;
+}
+
+.problem-box {
+    position: relative;
+    width: 90%;
+    border: 2px solid #4caaae;
+    border-radius: 10px;
+    left: 5%;
+    top: 50px;
+}
+
+.problem-form {
+    position: relative;
+    left: 3%;
+    margin-bottom: 20px;
+}
+
+.problem-span {
+    font-size: 20px;
+    color: darksalmon;
+}
+
+.writeup-btn {
+    float: right;
+    padding: 20px;
+    z-index: 99;
+    position: relative;
+}
+
+.flag-input{
+	border-bottom: 1px solid #dbdbdb;  
+	border-top:0px;  
+	border-left:0px;  
+	border-right:0px;  
+	width: 200px;
+	position: relative;
+	top: -10px;
+	color: #000000;
+	height: 40px;
+	outline:none;
+}
+.code-input{
+	border-bottom: 1px solid #dbdbdb;  
+	border-top:0px;  
+	border-left:0px;  
+	border-right:0px;  
+	width: 100px;
+	position: relative;
+	top: -10px;
+	color: #000000;
+	height: 40px;
+	outline:none;
+}
+#v_container {
+    position: relative;
+    top: -10px;
+    width: 97px;
+    height: 40px
+}

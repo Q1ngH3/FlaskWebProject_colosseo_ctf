@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home|MYCTF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../../static/content/homepage_files/writeup_publish.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="../../../../static/bootstrap/script/jquery/jquery.min.js"></script>
+    <script src="../../../../static/bootstrap/script/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" href="../../../../static/editormd/css/editormd.css" />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 999;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li class="active">
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id = id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id=id)}}">trend</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{ name }} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout')}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="particles-js" style="z-index: -1;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../../../static/scripts/particle/helloweb.js"></script>
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <div class="return-btn" style="position:relative;float:left;left:5%;margin-bottom:20px;">
+        <a href="{{url_for('home_page.submit',id=id,question_name = question.name)}}">
+            <button type="button" id="return-button" class="btn btn-info">
+                返回题目详情
+            </button>
+        </a>
+    </div>
+    
+    <div class="gowriteup-btn" style="position:relative;float:right;right:5%;margin-bottom:20px;">
+        <form action="{{url_for('home_page.writeup_list',id=id)}}">
+            <input type="submit" name="preview" value="查看writeup列表" class="btn btn-danger">
+        </form>
+    </div>
+    
+
+    <form action="{{url_for('home_page.publish',id=id,question_id=question.sequence)}}" method="post">
+        <div class="input-group" style="width:90%;position:relative;left:5%;margin-bottom:20px;">
+            <span class="input-group-addon">标题</span>
+            <input type="text" name="title" class="form-control title" placeholder="writeup title">
+        </div>
+
+        <div id="test-editormd">
+            <textarea name="TextContent" id="TextContent"></textarea>
+        </div>
+        <input type="reset" name="reset" value="重置" class="btn btn-danger" style="width:100px;position:relative;float:left;left:5%;">
+
+        <input type="submit" name="submit" value="发布writeup" class="btn btn-success" style="width:100px;position:relative;float:right; right:5%;">
+    </form>
+
+    <script src="../../../../static/bootstrap/script/jquery/jquery.min.js"></script>
+    <script src="../../../../static/editormd/editormd.min.js"></script>
+    <script type="text/javascript">
+    var testEditor;
+
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "90%",
+            height: 500,
+            syncScrolling: "single",
+            path: "../../../../static/editormd/lib/",
+            // 上传图片
+            imageUpload : true,
+            imageFormats : [ "jpg", "jpeg", "gif", "png", "bmp", "webp" ],
+            // 上传图片时指定调用后台的视图函数
+            // homepage是蓝图 uploads是访问url
+            imageUploadURL : "{{ url_for('home_page.uploads') }}",
+
+        });
+    });
+    </script>
+
+    <script src="../../../../static/scripts/particle/particles.js"></script>
+    <script src="../../../../static/scripts/particle/particle-code.js"></script>
+
+
+
+</body>
+</html>

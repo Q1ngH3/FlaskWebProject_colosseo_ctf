@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Problem|MYCTF</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../../../../static/content/homepage_files/problem.css"/>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!-- 包含头部信息用于适应不同设备 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="../../../../static/bootstrap/script/jquery/jquery.min.js"></script>
+	<script src="../../../../static/bootstrap/script/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<script src="../../../../static/scripts/create_code.js"></script>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+    <style>
+        .tmp{
+            width:180px;
+            color:#905eff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 10;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li class="active">
+                    <a class="navbar-brand" href="{{url_for('home_page.home',id=id)}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('home_page.challenge',id=id)}}">challenges</a></li>
+                    <li><a href="{{url_for('home_page.notice',id = id)}}">notice</a></li>
+                    <li><a href="{{url_for('home_page.ranking',id=id)}}">ranking</a></li>
+                    <li><a href="{{url_for('home_page.team_general',id=id)}}">team</a></li>
+                    <li><a href="{{url_for('home_page.trend',id = id)}}">trend</a></li>
+                </ul>
+            </div>
+
+
+            <div>
+                <!--向右对齐-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{{url_for('home_page.message',id=id)}}">
+                            <i class="material-icons">message</i>
+                            <span style="position: relative;top: -10px;">messages</span>
+                        </a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            welcome {{ user.name }} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{url_for('home_page.user_information',id=id)}}">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    my information
+                                </a>
+                            </li>
+                            {% if user.has_team %}
+                            <li>
+                                <a href="{{url_for('home_page.my_team_information',id=id)}}">
+                                    <i class="material-icons">group</i>
+                                    <label for="group-lable" style="position: relative;top: -5px;font-weight: 500;">my team</label>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{url_for('auth.logout')}}">
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    log out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="particles-js" style="z-index: -1;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../../../../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../../../../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../../../../static/scripts/particle/helloweb.js"></script>
+
+
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <div class="return-button" style="position:relative;padding:10px 0 0 50px;">
+        <a href="{{url_for('home_page.challenge',id=id)}}">
+            <button type="button" id="return-button" class="btn btn-info">
+                返回题目列表
+            </button>
+        </a>
+    </div>
+    
+
+    <div class="problem-box">
+        <div class="writeup-btn">
+            <a href="{{url_for('home_page.publish',id=id,question_id=question.sequence)}}">
+                <button class="btn btn-danger">
+                    writeup
+                </button>
+            </a>
+        </div>
+
+        <form action="{{url_for('home_page.submit',id = id , question_name = question_name)}}" method="post" enctype="multipart/form-data">
+
+            <div class="problem-form">
+                {{form.csrf_token()}}
+                <h1 style="color: #FFFFFF;">{{question_name}}</h1>
+                <span class="problem-span">题目描述：</span>
+                <h4 style="color:#4e73ef;width:94%;">{{question.describe}}</h4>
+
+                <h3><span class="problem-span">题目链接：</span><a href="{{question.hyper_link | safe}}" style="color: purple;">Link</a></h3>{# 一定不要忘了加协议名，不然只会在用这个连接名覆盖掉该路径原本的连接名 #}
+                <br />
+                {% if key == None %}
+                <div>
+                    <i class="material-icons" style="color: grey; font-size: 30px;">flag</i>
+                    {{ form.flag(id="flag",placeholder="flag",class="flag-input") }}
+                    <br />
+                    <i class="material-icons" style="color: grey; font-size: 30px;">lock</i>
+                    {{form.verify_code(placeholder='请输入验证码',class="code-input")}}
+                    <!--点击图片重新获取验证码-->
+                    <img src="{{ url_for('home_page.get_code') }}" id="v_container" onclick="this.src='{{ url_for('home_page.get_code') }}?'+ Math.random()">
+                </div>
+                <br />
+                {{form.submit(class="btn btn-danger btn-simple")}}
+                {% endif %}
+
+                {% if key %}
+                <div>
+                    <h4 style="color:#36ec4a">您已经完成了这道题</h4>
+                    <h4 style="color:#36ec4a">您可以选择提交文件/点击右上角编写writeup</h4>
+                    <div>
+                        <i class="material-icons" style="color: grey; font-size: 30px;float:left;margin-right:5px;">file_upload</i>
+                        {{ fileform.file(class="tmp") }}
+                    </div>
+                    <br>
+                    <i class="material-icons" style="color: grey; font-size: 30px;">lock</i>
+                    {{fileform.verify_code(placeholder='请输入验证码',class="code-input")}}
+                    <!--点击图片重新获取验证码-->
+                    <img src="{{ url_for('home_page.get_code') }}" id="v_container" onclick="this.src='{{ url_for('home_page.get_code') }}?'+ Math.random()">
+                </div>
+                <br />
+                {{fileform.submit(class="btn btn-danger btn-simple")}}
+                {% endif %}
+            </div>
+        </form>
+
+
+    </div>
+
+    
+    <script src="../../../../static/scripts/particle/particles.js"></script>
+    <script src="../../../../static/scripts/particle/particle-code.js"></script>
+
+</body>
+</html>

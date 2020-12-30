@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MYCTF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../static/content/site_itself.css" />
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="height: 30px; border-radius: 0;z-index: 10;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <li>
+                    <a class="navbar-brand" href="{{url_for('log.login')}}">HOME|MYCTF</a>
+                </li>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ url_for('log.site_itself') }}">About This Site</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('log.notice') }}">Notice</a>
+                    </li>
+                    <li class="active">
+                        <a href="{{ url_for('log.help') }}">Help</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div id="particles-js" style="z-index: -1;">
+        <canvas class="particles-js-canvas-el" style="width: 100%; height: 100%;"></canvas>
+    </div>
+
+    <div id="large-header" style="z-index: -1;">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <script src="../static/scripts/particle/EasePack.min.js"></script>
+    <script src="../static/scripts/particle/TweenLite.min.js"></script>
+    <script src="../static/scripts/particle/helloweb.js"></script>
+
+    <div class="contents">
+        <h1>MYCTF帮助文档（2019年10月7日更新）</h1>
+        <hr />
+        <h2>一、用户</h2>
+        <h5>一个用户，有唯一的主键realname和自定义的非主键username。</h5>
+        <h5>所有用户需要实名认证，即每个学号对应一个用户</h5>
+        <h2>二、分数计算</h2>
+        <h5>。。。</h5>
+        <h2>三、本站规则</h2>
+        <h5>不允许什么，允许什么，有什么奖惩</h5>
+        <h2>四、其他</h2>
+        <h3>管理员联系方式</h3>
+        <h5>
+            QQ：1220418120  2395967268  2379448326
+            <br />
+            电话：19801231323
+        </h5>
+    </div>
+
+    <script src="../static/scripts/particle/particles.js"></script>
+    <script src="../static/scripts/particle/particle-code.js"></script>
+
+</body>
+</html>

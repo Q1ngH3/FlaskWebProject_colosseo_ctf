@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <form action="{{url_for('home_page.web_one')}}" method="post">
+        {{form.csrf_token()}}{#实现csrf的检查#}
+        <p>
+            输入框：<input type="password" id="flag" name="flag" maxlength="10"><br>
+            请输入口令：We1c0m3t0Col0sseoCTFi3Ld
+            {{form.create()}}
+    </form>
+</body>
+</html>

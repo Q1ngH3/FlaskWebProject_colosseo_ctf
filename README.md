@@ -1,7 +1,7 @@
 # FlaskWebProject_colosseo_ctf
 - `BUPT`大二上
 - 网络安全平台设计实践
-- 以小组为单位
+- 以小组为单位:[xqh](https://github.com/xiaoxiaorenwu) | [ws](https://github.com/ws0407) | lxh
 - 任务一：开发CTF平台并部署题目
   - 使用`flask`开发
   - 基本功能都已具备：注册登录验证码，一二三血题目的分数加成，需要队长同意的加入队伍功能，个人排行/队伍排行/分类排行榜，可上传`writeup`等
